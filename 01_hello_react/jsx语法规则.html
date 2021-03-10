@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.title{
+				background-color: orange;
+				width: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="test"></div>
+		
+		
+		
+		<script type="text/javascript" src="../js/react.development.js" ></script>
+		<script type="text/javascript" src="../js/react-dom.development.js" ></script>
+		<script type="text/javascript" src="../js/babel.min.js" ></script>
+		
+		<script type="text/babel">
+			
+			const myId = 'atGuigu'
+			const myData = 'heLLo,rEact'
+			//1. 创建虚拟dom
+			
+			const VDOM = (
+				<div>
+					<h2 className="title" id={myId.toLowerCase()}>
+						<span style={{color: 'white',fontSize: '29px'}} >{myData.toLowerCase()}</span>
+					</h2>
+					<input/>
+				</div>
+				
+			)
+			
+			//2. 渲染虚拟dom 到页面
+			ReactDOM.render(VDOM,document.getElementById('test'))
+			/*
+				1.定义虚拟DOM时不要加引号
+				2.标签中混入js表达式时要用{}
+				3.样式的类名不要用class 需要用className
+				4.内联样式style 需要用{{key:value}} 形式
+				5.只有一个根标签
+				6.所有标签必须闭合
+				7.标签首字母
+					（1）若以小写字母开头，则将该标签转换为html的同名标签，若html无该标签则报错
+					（2）若以大写字母开头，react 就去渲染对应的组件，若无对应的组件则报错
+				
+			*/
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

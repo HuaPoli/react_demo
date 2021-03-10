@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>state属性</title>
+	</head>
+	<body>
+		<!-- 准备好一个容器 -->
+		<div id="test"></div>
+			
+		
+		<!-- 引入react核心库 -->
+		<script src="../js/react.development.js" type="text/javascript"></script>  
+		<!-- 引入react扩展库 -->
+		<script src="../js/react-dom.development.js"></script>
+		<!-- 引入babel将jsx 转换为js -->
+		<script src="../js/babel.min.js"></script>
+		
+		<script type="text/babel">
+			
+			// 定义组件
+			class Weather extends React.Component {
+				constructor(props) {
+				    super(props)
+					this.state = {isHot: false, wind: '微风' }
+					this.changeWeather = this.changeWeather.bind(this)
+				}
+				render(){
+					const {isHot,wind} = this.state
+					return <h1 onClick={this.changeWeather}>今天天气很{isHot ? '炎热' : '凉爽'},{wind}</h1>
+				}
+				changeWeather(){
+					//changeWeather 放在哪的？ --- Weather的原型对象上。供实例使用
+					// 由于changeWeather 是作为onClick的回调，所以不是通过实例调用的，是直接调用
+					// 类中的方法默认开启了局部严格模式，所以changeWeather中的this为undefined
+					console.log(this)
+					let isHot = this.state.isHot
+					this.setState({isHot:!isHot})
+					console.log(isHot);
+				}
+			}
+			//渲染到页面
+			ReactDOM.render(<Weather></Weather>,document.getElementById('test'))
+			
+			
+			
+			
+			
+		</script>
+		
+		
+		
+	</body>
+</html>
