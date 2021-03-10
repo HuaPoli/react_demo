@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>react的生命周期（新）</title>
+    <style>
+        .list {
+            width: 100px;
+            height: 150px;
+            background-color: skyblue;
+            overflow: auto;
+        }
+        .news {
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script src="../js/react.development.js" type="text/javascript"></script>  
+    <!-- 引入react扩展库 -->
+    <script src="../js/react-dom.development.js"></script>
+    <!-- 引入babel将jsx 转换为js -->
+    <script src="../js/babel.min.js"></script>
+    <!-- 引入prop-types用于对组件标签属性进行限制 -->
+    <script src="../js/prop-types.js"></script>
+    <script type="text/babel">
+
+        // 创建组件
+        class Demo extends React.Component {
+            state = {list: []}
+            constructor(props) {
+                super(props)
+                console.log('构造方法执行了-------------------constructor');
+            }
+
+            //==============================
+            // 生命周期函数
+            //==============================
+            static getDerivedStateFromProps(props,state) {
+                console.log(props,state);
+                console.log('派生的stateFromProps执行了-----------getDerivedStateFromProps');
+                return null
+            }
+
+             // 是否更新组件
+             shouldComponentUpdate() {
+                console.log('是否跟新组件状态执行了----------shouldComponentUpdate');
+                return true
+            }
+
+            render() {
+                console.log('render方法执行了');
+                return (
+                    <div className="list" ref={c => this.list = c }>
+                        {this.state.list.map((n,index) => {
+                            return <div key={index} className="news">{n}</div>
+                        })}
+                    </div>
+                )
+            }
+            // 页面挂在后钩子
+            componentDidMount() {
+             
+                setInterval( ()=>{
+                    const {list} = this.state
+                    // 获取新闻
+                    const news = '新闻' + (list.length + 1)
+                    this.setState({list: [news,...list]})
+                },1000)
+                console.log('页面挂在后钩子执行了------ComponentDidMount');
+            }
+            // 获取更新前的快照
+            getSnapshotBeforeUpdate() {
+                console.log('获取更新前的快照-----getSnapshotBeforeUpdate',this.list.scrollHeight);
+                return this.list.scrollHeight
+                
+            }
+
+
+            // 页面更新后钩子函数执行了
+            componentDidUpdate(preProps,preState,snapshot) {
+                console.log('页面更新后钩子函数执行了----------componentDidUpdate'+snapshot);
+                this.list.scrollTop += this.list.scrollHeight - snapshot
+            }
+
+            // 组件卸载前的钩子
+            componentWillUnmont() {
+                console.log('组件卸载前的钩子-----------componentWillUnmount');
+            }
+
+
+        }
+        ReactDOM.render(<Demo/>,document.getElementById('test'))
+
+    </script>
+
+
+
+</body>
+</html>

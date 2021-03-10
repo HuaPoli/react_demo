@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>react的生命周期（旧）</title>
+</head>
+<body>
+    <div id="test"></div>
+		<!-- 引入react核心库 -->
+		<script src="../js/react.development.js" type="text/javascript"></script>  
+		<!-- 引入react扩展库 -->
+		<script src="../js/react-dom.development.js"></script>
+		<!-- 引入babel将jsx 转换为js -->
+		<script src="../js/babel.min.js"></script>
+		<!-- 引入prop-types用于对组件标签属性进行限制 -->
+		<script src="../js/prop-types.js"></script>
+		
+        
+		<script type="text/babel">
+            // 创建组件
+           class Demo extends React.Component {
+                constructor(props) {
+                    super(props)
+                    console.log('构造函数执行了')
+                }
+               state = {count: 0}
+               add = () => {
+                   const {count} = this.state
+                   this.setState({count: count+1})
+               }
+            //    卸载组件
+                death = () => {
+                    // console.log("卸载组件");
+                   ReactDOM.unmountComponentAtNode(document.getElementById('test'))              
+                }
+                // 强制更新
+                force = () => {
+                    this.forceUpdate()
+                }
+
+
+                // =========================================================================================
+                                    // 以下时生命周期
+
+                // 组件将要挂在前
+                componentWillMount() {
+                    console.log('组件将要挂载前----------------componentWillMount')
+                }
+
+                // 是否更新组件
+                shouldComponentUpdate() {
+                    console.log('是否更新组件的状态---------------shouldComponentUpdate');
+
+                    // return true
+                    return false
+                }
+                
+                // 组件更新前
+                componentWillUpdate() {
+                    // 强制更新从此处开始执行，之前为更新的数据会重新更新
+                    console.log('组件更新前--------------componentWillUpdate----'+this.state.count);
+                }
+
+
+                render() {
+                    console.log('我在渲染页面，在一次加载和状态数据发生改变时执行-------render')
+                   return (
+                        <div>
+                            <h1>当前求和为：{this.state.count}</h1>
+                            <button onClick={this.add}>点我+1</button>
+                            <button onClick={this.death}>卸载组件</button>
+                            <button onClick={this.force}>不更改任何状态中的数据，强制更新</button>
+                        </div>
+                   )
+               }
+
+            //    组件挂在后执行
+                componentDidMount() {
+                    console.log('在组件挂在后执行---------------componentDidMount-----我只执行一次哦');      
+                }
+
+                // 组件完成更新
+                componentDidUpdate() {
+                    console.log('组件完成更新前--------------componentDidUpdate----'+this.state.count);
+                }
+
+
+                // 组件卸载前执行
+                componentWillUnmount() {
+                    console.log('在组件将要卸载前执行-------------componentWillUnmount');
+                }
+           }
+            // 渲染到页面
+
+           class A extends React.Component {
+                state = {car: '奔驰'}
+                changeCar = () => {
+                    this.setState({car: '奥托'})
+                }
+                render() {
+                    return (
+                        <div>
+                            <p onClick={this.changeCar}>点击换车</p>
+                            <B car={this.state.car}/>
+                        </div>
+                    )
+                }
+
+           }
+           class B extends React.Component {
+
+                 // 组件将要挂在前
+                 componentWillMount() {
+                    console.log('组件将要挂载前----------------componentWillMount')
+                }
+
+                // 接收父组件参数更新前
+                componentWillReceiveProps() {
+                    console.log('接收父组件参数更新前--------componentWillReceiveProps-------只有父组件传的参数改了我才执行');
+                }
+
+                // 是否更新组件
+                shouldComponentUpdate() {
+                    console.log('是否更新组件的状态---------------shouldComponentUpdate');
+
+                    // return true
+                    return true
+                }
+                
+                // 组件更新前
+                componentWillUpdate() {
+                    // 强制更新从此处开始执行，之前为更新的数据会重新更新
+                    console.log('组件更新前--------------componentWillUpdate----');
+                }
+
+                render() {
+                    return (
+                        <div>{this.props.car}</div>
+                    )
+                }
+
+                //    组件挂在后执行
+                componentDidMount() {
+                    console.log('在组件挂在后执行---------------componentDidMount-----我只执行一次哦');      
+                }
+
+                // 组件完成更新
+                componentDidUpdate() {
+                    console.log('组件完成更新前--------------componentDidUpdate----');
+                }
+
+
+                // 组件卸载前执行
+                componentWillUnmount() {
+                    console.log('在组件将要卸载前执行-------------componentWillUnmount');
+                }
+
+           }
+
+
+            // ReactDOM.render(<Demo/>,document.getElementById('test'))
+            ReactDOM.render(<A/>,document.getElementById('test'))
+
+         
+
+
+        </script>
+    
+</body>
+</html>
